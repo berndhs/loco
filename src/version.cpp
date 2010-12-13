@@ -28,7 +28,7 @@
  
 namespace deliberate {
 
-  QString ProgramVersion::VersionNumber ("0.0.3");
+  QString ProgramVersion::VersionNumber ("0.0.5");
 
   QString ProgramVersion::ProgramName("Loco");
   QString ProgramVersion::copyright ("Copyright (C) 2010 Bernd Stramm");
@@ -45,6 +45,11 @@ namespace deliberate {
 		       + QString(__TIME__)
 		       + QString("\r\n")
 		       + copyright;
+  }
+
+  QString ProgramVersion::Number ()
+  {
+    return VersionNumber;
   }
 
   void ProgramVersion::ShowVersionWindow ()
