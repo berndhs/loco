@@ -4,7 +4,7 @@ NAME=loco
 VERSION=`grep "ProgramVersion::VersionNumber" src/version.cpp \
         | awk '{print $3;}' \
         | sed s/[\(\"\;\)]//g`
-PACKDIR=${HOME}/packaging/dchat
+PACKDIR=${HOME}/packaging/${NAME}
 
 makearchive.sh ${NAME}-${VERSION} master
 cp ${NAME}-${VERSION}.tar.gz ${PACKDIR}
