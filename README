@@ -1,6 +1,5 @@
-DeNada
+Loco
 
-This program does nothing. It is a framework to start writing applications
-with some useful stuff. Like license, About menu, Settings editor, and debug
-logger.
+This program is used for experiments with geolocation libraries and services.
+The initial version cruises between a list of waypoints and caches map image data.
 
