@@ -97,6 +97,9 @@ public:
 
   void pan(const QPoint &delta) ;
 
+  qlonglong  CacheHits () { return cacheHits; }
+  qlonglong  CacheMisses () { return cacheMisses; }
+
 public slots:
 
   void positionUpdated(const QGeoPositionInfo &gpsPos) ;
@@ -128,6 +131,9 @@ private:
   QList<QNetworkReply*> m_pendingReplies;
 
   static int countMaps;
+
+  qlonglong   cacheHits;
+  qlonglong   cacheMisses;
 
 };
 

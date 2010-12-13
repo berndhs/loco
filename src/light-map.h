@@ -84,6 +84,9 @@ public:
   void SetLocator (QGeoPositionInfoSource * locSrc);
   void ConnectCache () ;
 
+  qlonglong CacheHits ();
+  qlonglong CacheMisses ();
+
 public slots:
 
   void toggleNightMode();

@@ -94,6 +94,32 @@ LightMap::~LightMap()
     m_location->stopUpdates();
 }
 
+qlonglong
+LightMap::CacheHits ()
+{
+  qlonglong count (0);
+  if (m_normalMap) {
+    count += m_normalMap->CacheHits ();
+  }
+  if (m_largeMap) {
+    count += m_largeMap->CacheHits ();
+  }
+  return count;
+}
+
+qlonglong
+LightMap::CacheMisses ()
+{
+  qlonglong count (0);
+  if (m_normalMap) {
+    count += m_normalMap->CacheMisses ();
+  }
+  if (m_largeMap) {
+    count += m_largeMap->CacheMisses ();
+  }
+  return count;
+}
+
 void
 LightMap::stopPositioning()
 {

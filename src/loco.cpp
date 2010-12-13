@@ -39,12 +39,12 @@
 using namespace deliberate;
 using namespace QtMobility;
 
-static const int LocalUpdateDelay (200);
+static int LocalUpdateDelay (200);
 
 namespace loco
 {
 
-Loco::Loco (QWidget *parent)
+Loco::Loco (const QString & tour, QWidget *parent)
   :QMainWindow (parent),
    initDone (false),
    app (0),
@@ -54,10 +54,13 @@ Loco::Loco (QWidget *parent)
    locator (0)
 {
   mainUi.setupUi (this);
+  LocalUpdateDelay = 
+       Settings().value ("timers/updateperiod", LocalUpdateDelay).toInt();
+  Settings().setValue ("timers/updateperiod",LocalUpdateDelay);
   mainUi.displayMap->setUpdateDelay (LocalUpdateDelay);
   mainUi.actionRestart->setEnabled (false);
   helpView = new HelpView (this);
-  locator = new Locator (this);
+  locator = new Locator (tour, this);
   Connect ();
 }
 
@@ -257,10 +260,16 @@ Loco::NewPosition (const QGeoPositionInfo & here)
                          .arg (now.toString ("hh:mm:ss")));
 #endif
   dist = coord.distanceTo (destination);
-  mainUi.destination->setText (tr("going to %1 at %2 with %3 km left")
+  mainUi.destination->setText (tr("going %4 (%5) to %1 at %2 with %3 km left")
                                .arg (destName)
                                .arg (destination.toString())
-                               .arg (qRound(dist/1000.0)));
+                               .arg (qRound(dist/1000.0))
+                               .arg (CompassDir (azi))
+                               .arg (azi));
+  QString stats ("Cache: Hits %1 Misses %2");
+  mainUi.statLabel->setText (stats
+                     .arg (mainUi.displayMap->CacheHits())
+                     .arg (mainUi.displayMap->CacheMisses()));
 }
 
 void

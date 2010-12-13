@@ -103,8 +103,12 @@ main (int argc, char *argv[])
     deliberate::StartFileLog (logfile);
   }
 #endif
-  
-  loco::Loco   loco;
+  QStringList args = opts.Arguments();
+  QString tour;
+  if (args.count() > 0) {
+    tour = args.at(0);
+  }
+  loco::Loco   loco (tour);
 
   app.setWindowIcon (loco.windowIcon());
   loco.Init (app);

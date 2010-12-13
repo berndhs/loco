@@ -42,7 +42,9 @@ SlippyMap::SlippyMap(QNetworkSession *session,
   longitude(10.7387413),
   m_location(location),
   m_session(session),
-  sCache (0)
+  sCache (0),
+  cacheHits (0),
+  cacheMisses (0)
 {
   setObjectName (QString ("SlippyMap-%1").arg(countMaps++));
   m_emptyTile = QPixmap(T_DIM, T_DIM);
@@ -249,7 +251,7 @@ qDebug () << " SlippyMap donwload grab is zero";
   m_url = QUrl(path.arg(zoom).arg(grab.x()).arg(grab.y()));
   if (sCache) {
     if (sCache->GetTile (grab,m_url.path())) {
-qDebug () << " GetTile says yes for " << grab;
+      cacheHits += 1;
       return;
     }
   }
@@ -258,6 +260,7 @@ qDebug () << " GetTile says yes for " << grab;
   request.setRawHeader("User-Agent", "Nokia (Qt) Graphics Dojo 1.0");
   request.setAttribute(QNetworkRequest::User, QVariant(grab));
   m_pendingReplies << m_manager->get(request);
+  cacheMisses += 1;
 }
 
 QRect

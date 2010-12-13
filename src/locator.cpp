@@ -30,18 +30,38 @@
 using namespace QtMobility;
 using namespace deliberate;
 
-static const int LocalMoveStep (334);
 
 namespace loco
 {
+
+int Locator::LocalMoveStep (334);
+
 Locator::Locator (QObject *parent)
   :QGeoPositionInfoSource (parent),
    timer (0),
    moveStep (LocalMoveStep)
 {
+  LocalMoveStep = Settings().value ("steps/localmove",
+                  LocalMoveStep).toInt();
+  Settings().setValue ("steps/localmove",LocalMoveStep);
+  moveStep = LocalMoveStep;
   timer = new QTimer (this);
   connect (timer, SIGNAL (timeout()), this, SLOT (getPosition()));
   InitCircuit ();
+}
+
+Locator::Locator (const QString & tourfile, QObject *parent)
+  :QGeoPositionInfoSource (parent),
+   timer (0),
+   moveStep (LocalMoveStep)
+{
+  LocalMoveStep = Settings().value ("steps/localmove",
+                  LocalMoveStep).toInt();
+  Settings().setValue ("steps/localmove",LocalMoveStep);
+  moveStep = LocalMoveStep;
+  timer = new QTimer (this);
+  connect (timer, SIGNAL (timeout()), this, SLOT (getPosition()));
+  InitCircuit (tourfile);
 }
 
 QGeoPositionInfo
@@ -89,13 +109,16 @@ Locator::requestUpdate (int timeout)
 }
 
 void
-Locator::InitCircuit ()
+Locator::InitCircuit (const QString & tourfile)
 {
   //AddSpot (43.0 + 4.777/60.0,- (79.0 + 21.044/60.0) );
   circuit.clear ();
-  QString filename ("./locations");
-  filename = Settings().value ("locations",filename).toString();
-  Settings().setValue ("locations",filename); 
+  QString filename (tourfile);
+  if (filename.length() == 0) {
+    filename = QString ("./locations");
+    filename = Settings().value ("locations",filename).toString();
+    Settings().setValue ("locations",filename); 
+  }
   QFile circuitFile (filename);
   bool ok = circuitFile.open (QFile::ReadOnly);
   if (ok) {
@@ -109,39 +132,10 @@ Locator::InitCircuit ()
       AddSpot (lat, lon, name.trimmed());
     }
   } else {
-    AddSpot (39.760414,-104.998169, "Denver"); // Denver
-    AddSpot (35.185482,-114.06189, "Kingman, AZ"); // kingman, AZ
-    AddSpot (32.798141, -117.240801, "San Diego, CA"); // pacifig beach
-    AddSpot (37.556173, -121.992989, "Fremont, CA"); // fremont
-    AddSpot (29.426202,-98.463135, "San Antonio, TX"); // San Antonio, TX
-    AddSpot (30.042469,-90.095216, "New Orleans, LA");
-    AddSpot (30.270454,-81.569825, "Jacksonville, FL");
-    AddSpot (41.888646,-87.612412, "Chicago, IL"); // chicago
-    AddSpot (36.214142,-86.817627, "Nashville, TN");
-    AddSpot (39.953543,-83.063966, "Columbus, OH");
-    AddSpot (43.025934,-83.079529, "Imlay City, MI");
     AddSpot (43.081001,-79.071407, "Niagara Falls"); // niagara falls
     AddSpot (40.689828,-74.045162, "NYC"); // lady liberty
-    AddSpot (38.673503,-90.223389, "St. Louis, MO");
   }
   circuitFile.close ();
-#if 0
-  AddSpot (76.531192,-68.710756, "Thule");  // Thule
-  AddSpot (64.126967,-21.861649, "Reykjavik"); // Reykjavik
-  AddSpot (57.155908,-2.10022, "Aberdeen");  // Aberdeen
-  AddSpot (51.6748, -0.0417,"London, England"); // london
-  AddSpot (36.14378,-5.355206, "Gibraltar"); // Gibraltar
-  AddSpot (52.356816,4.870605, "Amsterdam"); //  Amsterdam
-  AddSpot (54.350474,18.619995, "Gdansk"); //  Gdansk
-  AddSpot (40.997728,28.981018, "Istanbul"); //  Istanbul
-  AddSpot (32.060697,34.787292, "Tel Aviv");  // Tel Aviv
-  AddSpot (21.435685,39.845581, "Mecca");  // Mecca
-  AddSpot (29.655597,91.182861, "Lhasa, Tibet"); // Lhasa, Tibet
-  AddSpot (1.321538,103.829956, "Singapore"); // Singapore
-  AddSpot (43.140226,131.917534, "Vladivostok");  // Vladivostok
-  AddSpot (66.158471,-169.804745, "Siberia");  // spot in NE Siberia
-  AddSpot (61.282905,-149.868166, "Anchorage, AK");  // anchorage, AK
-#endif
   QString destName;
   FirstSpot (lastPosition, destPosition, destName);
   moveStep = LocalMoveStep;

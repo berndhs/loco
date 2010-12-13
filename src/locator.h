@@ -35,7 +35,8 @@ class Locator : public QGeoPositionInfoSource
 {
   Q_OBJECT
 public:
-  Locator(QObject *parent = 0);
+  Locator (QObject *parent = 0);
+  Locator (const QString & tourfile, QObject *parent = 0);
 
   QGeoPositionInfo lastKnownPosition(bool fromSatellitePositioningMethodsOnly = false) const;
 
@@ -58,7 +59,7 @@ signals:
 
 private:
 
-  void InitCircuit ();
+  void InitCircuit (const QString & tourname = QString ());
   void AddSpot (double lat, double lon, const QString & name);
   void NextSpot (QGeoCoordinate & origin, 
                   QGeoCoordinate & destination,
@@ -85,6 +86,8 @@ private:
   GeoList           circuit;
   GeoList::iterator currentSpot;
   GeoList::iterator destSpot;
+
+  static int LocalMoveStep;
 };
 } // namespace
 
