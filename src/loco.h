@@ -123,6 +123,10 @@ private:
   QString          destName;
   QGeoCoordinate   lastLocation;
 
+  int              normalStep;
+  int              shortStep;
+  bool             steppingNormal;
+
 };
 
 } // namespace

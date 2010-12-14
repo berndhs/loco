@@ -121,6 +121,12 @@ LightMap::CacheMisses ()
 }
 
 void
+LightMap::SetCourseAngle (qreal angleDegrees)
+{
+  courseAngle = angleDegrees;
+}
+
+void
 LightMap::stopPositioning()
 {
   if (m_location)
@@ -296,6 +302,18 @@ qDebug () << "LightMap paint " << event;
 #endif
   p.drawText(rect(), Qt::AlignBottom | Qt::TextWordWrap,
              "Map data CCBYSA 2009 OpenStreetMap.org contributors");
+  QPoint midpoint (rect().center());
+  QPen pen (Qt::DashLine);
+  pen.setColor (Qt::darkBlue);
+  p.setPen (pen);
+  p.drawEllipse (midpoint, 70,70);
+  pen.setColor (Qt::red);
+  p.setPen (pen);
+  p.drawEllipse (midpoint, 30,30);
+  p.setPen (Qt::black);
+  p.translate (midpoint);
+  p.rotate (courseAngle);
+  p.drawLine (0,0,0,100);
   p.end();
 
   

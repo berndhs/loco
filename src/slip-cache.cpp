@@ -65,7 +65,7 @@ SlipCache::SetupTimers ()
   sendTimer = new QTimer (this);
   connect (sendTimer, SIGNAL (timeout()),
            this, SLOT (DoSends()));
-  sendTimer->start (100);
+  sendTimer->start (50);
   cleanTimer = new QTimer (this);
   connect (cleanTimer, SIGNAL (timeout()),
            this, SLOT (DoClean ()));

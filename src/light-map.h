@@ -87,6 +87,8 @@ public:
   qlonglong CacheHits ();
   qlonglong CacheMisses ();
 
+  void SetCourseAngle (qreal angleDegrees);
+
 public slots:
 
   void toggleNightMode();
@@ -145,6 +147,7 @@ private:
   QNetworkSession *m_session;
   ConnectivityHelper *m_connectivityHelper;
   int   updateDelay;
+  qreal courseAngle;
 };
 
 } // namespace

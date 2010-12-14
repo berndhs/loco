@@ -51,7 +51,10 @@ Loco::Loco (const QString & tour, QWidget *parent)
    configEdit (this),
    helpView (0),
    runAgain (false),
-   locator (0)
+   locator (0),
+   normalStep (1000),
+   shortStep (100),
+   steppingNormal (true)
 {
   mainUi.setupUi (this);
   LocalUpdateDelay = 
@@ -61,6 +64,10 @@ Loco::Loco (const QString & tour, QWidget *parent)
   mainUi.actionRestart->setEnabled (false);
   helpView = new HelpView (this);
   locator = new Locator (tour, this);
+  normalStep = Settings().value ("steps/localmove",
+                  normalStep).toInt();
+  Settings().setValue ("steps/localmove",normalStep);
+  shortStep = normalStep/5;
   Connect ();
 }
 
@@ -246,6 +253,7 @@ Loco::NewPosition (const QGeoPositionInfo & here)
   QString newPlace = coord.toString();
   qreal dist = old.distanceTo (coord);
   qreal azi = old.azimuthTo (coord);
+  mainUi.displayMap->SetCourseAngle (azi);
   QString directions = QString (" %1 km head %2 (%3)")
                        .arg (dist/1000.0)
                        .arg (CompassDir(azi))
@@ -253,29 +261,39 @@ Loco::NewPosition (const QGeoPositionInfo & here)
   old = coord;
   lastLocation = coord;
   QDateTime now = QDateTime::currentDateTime();
-#if 0
-  mainUi.msgLog->append (QString ("%3 go %1 to %2")
-                         .arg (directions)
-                         .arg (newPlace)
-                         .arg (now.toString ("hh:mm:ss")));
-#endif
   dist = coord.distanceTo (destination);
-  mainUi.destination->setText (tr("going %4 (%5) to %1 at %2 with %3 km left")
+  qreal destDist = coord.distanceTo (destination);
+  qreal etaSecs = (destDist / locator->MoveStep()) * (locator->Interval()/1000.0);
+  mainUi.destination->setText (tr("going %6 m %4 (%5) to %1 \n"
+                        "at %2 \n"
+                        "with %3 km left ETA %7 secs")
                                .arg (destName)
                                .arg (destination.toString())
                                .arg (qRound(dist/1000.0))
                                .arg (CompassDir (azi))
-                               .arg (azi));
+                               .arg (azi)
+                               .arg (locator->MoveStep())
+                               .arg (etaSecs, 10, 'g',4));
   QString stats ("Cache: Hits %1 Misses %2");
   mainUi.statLabel->setText (stats
                      .arg (mainUi.displayMap->CacheHits())
                      .arg (mainUi.displayMap->CacheMisses()));
+
+  if (destDist < qreal (normalStep * 5)) {
+    steppingNormal = false;
+    locator->SetMoveStep (shortStep);
+  } else {
+    steppingNormal = true;
+    locator->SetMoveStep (normalStep);
+  }
 }
 
 void
 Loco::NewDestination (const QGeoCoordinate & whereTo,
                       const QString & name)
 {
+  locator->SetMoveStep (normalStep);
+  steppingNormal = true;
   destination = whereTo;
   destName = name;
   QDateTime now = QDateTime::currentDateTime();

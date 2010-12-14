@@ -41,9 +41,6 @@ Locator::Locator (QObject *parent)
    timer (0),
    moveStep (LocalMoveStep)
 {
-  LocalMoveStep = Settings().value ("steps/localmove",
-                  LocalMoveStep).toInt();
-  Settings().setValue ("steps/localmove",LocalMoveStep);
   moveStep = LocalMoveStep;
   timer = new QTimer (this);
   connect (timer, SIGNAL (timeout()), this, SLOT (getPosition()));
@@ -55,13 +52,16 @@ Locator::Locator (const QString & tourfile, QObject *parent)
    timer (0),
    moveStep (LocalMoveStep)
 {
-  LocalMoveStep = Settings().value ("steps/localmove",
-                  LocalMoveStep).toInt();
-  Settings().setValue ("steps/localmove",LocalMoveStep);
   moveStep = LocalMoveStep;
   timer = new QTimer (this);
   connect (timer, SIGNAL (timeout()), this, SLOT (getPosition()));
   InitCircuit (tourfile);
+}
+
+int
+Locator::Interval ()
+{
+  return timer->interval();
 }
 
 QGeoPositionInfo
@@ -80,6 +80,18 @@ int
 Locator::minimumUpdateInterval () const
 {
   return 50;
+}
+
+int
+Locator::MoveStep ()
+{
+  return moveStep;
+}
+
+void
+Locator::SetMoveStep (int newStep)
+{
+  moveStep = newStep;
 }
 
 void
@@ -138,7 +150,6 @@ Locator::InitCircuit (const QString & tourfile)
   circuitFile.close ();
   QString destName;
   FirstSpot (lastPosition, destPosition, destName);
-  moveStep = LocalMoveStep;
 qDebug () << "InitCircuit lastPosition " << lastPosition.toString();
 }
 

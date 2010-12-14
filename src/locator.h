@@ -43,6 +43,10 @@ public:
   PositioningMethods supportedPositioningMethods() const;
   int minimumUpdateInterval() const;
 
+  int MoveStep ();
+  void SetMoveStep (int newStep);
+  int Interval ();
+
 public slots:
   virtual void startUpdates();
   virtual void stopUpdates();
