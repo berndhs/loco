@@ -45,11 +45,14 @@
 **
 ****************************************************************************/
 
-#include <qmobilityglobal.h>
-#include <QtLocation/QGeoPositionInfoSource>
-#include <QtLocation/QGeoSatelliteInfoSource>
-#include <QtLocation/QNmeaPositionInfoSource>
-#include <QtLocation/QGeoPositionInfo>
+#include <QCoreApplication>
+#include <QGeoCoordinate>
+#include <QNmeaPositionInfoSource>
+
+//#include <QtLocation/QGeoPositionInfoSource>
+//#include <QtLocation/QGeoSatelliteInfoSource>
+//#include <QtLocation/QNmeaPositionInfoSource>
+//#include <QtLocation/QGeoPositionInfo>
 #include <QtNetwork/QNetworkConfigurationManager>
 #include <QtNetwork/QNetworkSession>
 #include <QWidget>
@@ -61,7 +64,7 @@
 #include "slippy.h"
 #include "connectivityhelper.h"
 
-using namespace QtMobility;
+//using namespace QtMobility;
 
 namespace loco
 {

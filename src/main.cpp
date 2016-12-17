@@ -24,7 +24,8 @@
 
 
 #include <QApplication>
-#include <QSystemInfo>
+#include <QLocale>
+#include <QSysInfo>
 #include "deliberate.h"
 #include "version.h"
 #include "cmdoptions.h"
@@ -42,7 +43,8 @@ main (int argc, char *argv[])
 
 
   QApplication  app (argc, argv);
-  QSystemInfo sysInfo;
+  QLocale locale;
+  QSysInfo sysInfo;
 
   QSettings  settings;
   deliberate::InitSettings ();
@@ -76,15 +78,13 @@ main (int argc, char *argv[])
   configMessages.append (QObject::tr("Running with Qt %1").arg(qVersion()));
 
   configMessages.append (QObject::tr("Current Country %1")
-                         .arg(sysInfo.currentCountryCode()));
+                         .arg(QLocale::countryToString(locale.country())));
   configMessages.append (QObject::tr("Current Language %1")
-                          .arg(sysInfo.currentLanguage()));
-  configMessages.append (QObject::tr("OS %1")
-                          .arg (sysInfo.version (QSystemInfo::Os)));
-  configMessages.append (QObject::tr("Qt Core %1")
-                          .arg (sysInfo.version (QSystemInfo::QtCore)));
-  configMessages.append (QObject::tr("Firmware %1")
-                          .arg (sysInfo.version (QSystemInfo::Firmware)));
+                          .arg(QLocale::languageToString(locale.language())));
+  configMessages.append (QObject::tr("build API %1")
+                          .arg (sysInfo.buildAbi()));
+  configMessages.append((QObject::tr("Product Name %1")
+                         .arg(sysInfo.prettyProductName())));
   for (int cm=0; cm<configMessages.size(); cm++) {
     deliberate::StdOut () << configMessages[cm] << endl;
   }

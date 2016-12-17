@@ -52,22 +52,27 @@
 #include <QtGui>
 #include <QtNetwork>
 
-#include <qmobilityglobal.h>
-#include <QtLocation/QGeoPositionInfoSource>
-#include <QtLocation/QGeoSatelliteInfoSource>
-#include <QtLocation/QNmeaPositionInfoSource>
-#include <QtLocation/QGeoPositionInfo>
+#include <QGeoCoordinate>
+#include <QGeoPositionInfoSource>
+#include <QGeoPositionInfo>
+
+//#include <QtLocation/QGeoPositionInfoSource>
+//#include <QtLocation/QGeoSatelliteInfoSource>
+//#include <QtLocation/QNmeaPositionInfoSource>
+//#include <QtLocation/QGeoPositionInfo>
 #include <QtNetwork/QNetworkConfigurationManager>
 #include <QtNetwork/QNetworkSession>
-#include <QDesktopServices>
+//#include <QDesktopServices>
+#include <QStandardPaths>
 #include <QPainter>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
+#warning Do not have M_PI
 #endif
 
 
-using namespace QtMobility;
+//using namespace QtMobility;
 
 namespace loco
 {

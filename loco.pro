@@ -27,12 +27,11 @@ MYNAME = loco
 
 TEMPLATE = app
 
-QT += core gui sql webkit network xml 
+QT += core gui sql  webenginewidgets network xml
+QT += positioning
+
 CONFIG += debug_and_release
-CONFIG += mobility
-MOBILITY += systeminfo
 CONFIG += bearer
-LIBS += -lQtLocation
 
 MAKEFILE = Make_$${MYNAME}
 
@@ -41,12 +40,14 @@ MAKEFILE = Make_$${MYNAME}
 }
 
 CONFIG(debug, debug|release) {
+  DEFINES +=  QT_MESSAGELOGCONTEXT
   DEFINES += DELIBERATE_DEBUG=1
   TARGET = bin/$${MYNAME}_d
   OBJECTS_DIR = tmp/debug/obj
   message ("DEBUG cxx-flags used $${QMAKE_CXXFLAGS_DEBUG}")
   message ("DEBUG c-flags used $${QMAKE_CFLAGS_DEBUG}")
 } else {
+  DEFINES +=  QT_MESSAGELOGCONTEXT
   DEFINES += DELIBERATE_DEBUG=0
   TARGET = bin/$${MYNAME}
   OBJECTS_DIR = tmp/release/obj

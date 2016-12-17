@@ -41,10 +41,10 @@ static DebugLog *staticLog(0);
 
 void UseMyOwnMessageHandler ()
 {
-  qInstallMsgHandler (deliberate::MyOwnMessageOutput);
+  qInstallMessageHandler (deliberate::MyOwnMessageOutput);
 }
 
-void MyOwnMessageOutput (QtMsgType type, const char* msg)
+void MyOwnMessageOutput(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
 {
 #if DELIBERATE_DEBUG
   switch (type) {
@@ -52,45 +52,45 @@ void MyOwnMessageOutput (QtMsgType type, const char* msg)
     if (staticLog) {
       staticLog->Log ("Qt Debug: ", msg);
     } else {
-      cout << "Qt Debug: " << msg << endl;
+      cout << "Qt Debug: " << msg.toStdString() << endl;
     }
     break;
   case QtWarningMsg:
     if (staticLog) {
       staticLog->Log ("Qt Warn: ", msg);
     } else {
-      cout << "Qt Warn: " << msg << endl;
+      cout << "Qt Warn: " <<  msg.toStdString() << endl;
     }
     break;
   case QtCriticalMsg:
     if (staticLog) {
       staticLog->Log ("Qt Critical: ", msg);
     } else {
-      cout << "Qt Critical: " << msg << endl;
+      cout << "Qt Critical: " <<  msg.toStdString() << endl;
     }
     break;
   case QtFatalMsg:
-    cout << "Qt Fatal: " << msg << endl;
+    cout << "Qt Fatal: " <<  msg.toStdString() << endl;
     if (staticLog) {
       staticLog->Log ("Qt Fatal: ", msg);
     } else {
-      cout << "Qt Fatal: " << msg << endl;
+      cout << "Qt Fatal: " <<  msg.toStdString() << endl;
     }
     abort();
     break;
   default:
-    cout << " unknown Qt msg type: " << msg << endl;
+    cout << " unknown Qt msg type: " <<  msg.toStdString() << endl;
     if (staticLog) {
       staticLog->Log ("Qt Debug: ", msg);
     } else {
-      cout << "Qt Debug: " << msg << endl;
+      cout << "Qt Debug: " <<  msg.toStdString() << endl;
     }
     break;
   }
 #else
   switch (type) {
   case QtFatalMsg:
-    cout << "Qt Fatal: " << msg << endl;
+    cout << "Qt Fatal: " <<  msg.toStdString() << endl;
     abort();
     break;
   case QtDebugMsg:
@@ -206,14 +206,14 @@ DebugLog::closeEvent (QCloseEvent *event)
 }
 
 bool
-DebugLog::Log (const char* msg)
+DebugLog::Log (const char* msg, const QString & smsg)
 {
   if (isLogging && useGui) {
-    logBox->append (QString(msg));
+    logBox->append (QString(msg)+ " " + smsg);
     update ();
   }
   if (logToFile) {
-    logFile.write (QByteArray (msg));
+    logFile.write (QByteArray (msg) + " " + smsg.toUtf8());
     logFile.write ("\n");
     logFile.flush ();
   }

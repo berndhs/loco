@@ -46,6 +46,7 @@
 
 
 #include <QDebug>
+#include <QMessageBox>
 
 namespace loco
 {
@@ -207,7 +208,7 @@ qDebug () << "          m_location " << m_location;
     QNmeaPositionInfoSource *nmeaLocation = 
               new QNmeaPositionInfoSource
                  (QNmeaPositionInfoSource::SimulationMode, this);
-    QFile *logFile = new QFile(QApplication::applicationDirPath()
+    QFile *logFile = new QFile(QCoreApplication::applicationDirPath()
                                + QDir::separator() + "nmealog.txt", this);
     nmeaLocation->setDevice(logFile);
     m_location = nmeaLocation;

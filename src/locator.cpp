@@ -23,11 +23,12 @@
  ****************************************************************/
 
 #include <QDebug>
-#include <QtLocation/QGeoCoordinate>
+#include <QGeoCoordinate>
+//#include <QtLocation/QGeoCoordinate>
 #include "deliberate.h"
 #include <math.h>
 
-using namespace QtMobility;
+//using namespace QtMobility;
 using namespace deliberate;
 
 
@@ -62,6 +63,11 @@ int
 Locator::Interval ()
 {
   return timer->interval();
+}
+
+QGeoPositionInfoSource::Error Locator::error() const
+{
+  qDebug() << Q_FUNC_INFO ;
 }
 
 QGeoPositionInfo

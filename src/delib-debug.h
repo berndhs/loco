@@ -79,7 +79,7 @@ void StartFileLog (QString filename);
 void StopDebugLog ();
 bool DebugLogRecording ();
 
-void MyOwnMessageOutput (QtMsgType type, const char* msg);
+void MyOwnMessageOutput (QtMsgType type, const QMessageLogContext &ctx, const QString & msg);
 
 int Hang (int msec = -1, const QString & message = QString("Hanging"));
 
@@ -97,7 +97,7 @@ public:
 
   void LogToFile (QString filename);
 
-  bool Log (const char * msg);
+  bool Log (const char * msg, const QString & smsg);
   bool Log (const char * kind, const char * msg);
   void closeEvent (QCloseEvent *event);
 

@@ -37,7 +37,7 @@
 #include "slip-cache.h"
 
 using namespace deliberate;
-using namespace QtMobility;
+//using namespace QtMobility;
 
 static int LocalUpdateDelay (200);
 
@@ -78,8 +78,8 @@ Loco::Init (QApplication &ap)
   connect (app, SIGNAL (lastWindowClosed()), this, SLOT (Exiting()));
   Settings().sync();
   initDone = true;
-  QString cachePath = QDesktopServices::storageLocation 
-                        (QDesktopServices::DataLocation);
+  QString cachePath = QStandardPaths::writableLocation
+                        (QStandardPaths::DataLocation);
   cachePath.append( QDir::separator() );
   cachePath.append ("tiles");
   cachePath.append (QDir::separator());

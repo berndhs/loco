@@ -44,14 +44,14 @@
 #include <QObject>
 
 // QtMobility API headers
-#include <qmobilityglobal.h>
-#include <QtLocation/QGeoPositionInfo>
+#include <QGeoCoordinate>
+
 #include <QtNetwork/QNetworkSession>
 
 class QWidget;
 
 // Use the QtMobility namespace
-using namespace QtMobility;
+//using namespace QtMobility;
 
 class ConnectivityHelper : public QObject
 {

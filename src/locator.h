@@ -21,13 +21,13 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor,
  *  Boston, MA  02110-1301, USA.
  ****************************************************************/
-#include <QtLocation/QGeoPositionInfoSource>
-#include <QtLocation/QGeoPositionInfo>
+#include <QGeoPositionInfo>
+#include <QGeoPositionInfoSource>
 #include <QObject>
 #include <QTimer>
 #include <QFile>
 
-using namespace QtMobility;
+//using namespace QtMobility;
 
 namespace loco
 {
@@ -46,6 +46,7 @@ public:
   int MoveStep ();
   void SetMoveStep (int newStep);
   int Interval ();
+  Error error() const;
 
 public slots:
   virtual void startUpdates();

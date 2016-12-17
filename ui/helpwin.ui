@@ -15,7 +15,7 @@
    <string>Souffleur Help</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../sched.qrc">
+   <iconset>
     <normaloff>:/denada.png</normaloff>:/denada.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -58,8 +58,8 @@
     </layout>
    </item>
    <item>
-    <widget class="QWebView" name="box">
-     <property name="url">
+    <widget class="QWebEngineView" name="box" native="true">
+     <property name="url" stdset="0">
       <url>
        <string>about:blank</string>
       </url>
@@ -69,15 +69,6 @@
   </layout>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
- <customwidgets>
-  <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header>QtWebKit/QWebView</header>
-  </customwidget>
- </customwidgets>
- <resources>
-  <include location="../sched.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

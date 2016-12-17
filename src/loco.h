@@ -47,7 +47,7 @@
 
 class QApplication;
 
-using namespace QtMobility;
+//using namespace QtMobility;
 
 
 using namespace deliberate;
