@@ -35,10 +35,6 @@ CONFIG += bearer
 
 MAKEFILE = Make_$${MYNAME}
 
-!include ("options.pri") {
-  message ("No options.pri, using defaults")
-}
-
 CONFIG(debug, debug|release) {
   DEFINES +=  QT_MESSAGELOGCONTEXT
   DEFINES += DELIBERATE_DEBUG=1
@@ -104,4 +100,7 @@ SOURCES = \
           src/connectivityhelper.cpp \
           src/light-map.cpp \
           src/slip-cache.cpp \
+
+DISTFILES += \
+    tour-default
 

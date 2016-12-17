@@ -26,11 +26,14 @@
 #include <QApplication>
 #include <QLocale>
 #include <QSysInfo>
+#include <QDebug>
 #include "deliberate.h"
 #include "version.h"
 #include "cmdoptions.h"
 #include "loco.h"
+#include <iostream>
 
+using namespace std;
 
 int
 main (int argc, char *argv[])
@@ -83,6 +86,8 @@ main (int argc, char *argv[])
                           .arg(QLocale::languageToString(locale.language())));
   configMessages.append (QObject::tr("build API %1")
                           .arg (sysInfo.buildAbi()));
+  configMessages.append(QObject::tr("Kernel %1")
+                        .arg(sysInfo.kernelType() + " "+sysInfo.kernelVersion()));
   configMessages.append((QObject::tr("Product Name %1")
                          .arg(sysInfo.prettyProductName())));
   for (int cm=0; cm<configMessages.size(); cm++) {
@@ -105,9 +110,13 @@ main (int argc, char *argv[])
 #endif
   QStringList args = opts.Arguments();
   QString tour;
+  cout  << "\n\nargument count" << args.count();
   if (args.count() > 0) {
     tour = args.at(0);
+  } else {
+    tour = QString(":/tour-default");
   }
+  cout << "\n\n\n\t\t" << Q_FUNC_INFO << "tour is" << tour.toStdString() << "\n\n\n";
   loco::Loco   loco (tour);
 
   app.setWindowIcon (loco.windowIcon());
