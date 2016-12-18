@@ -79,9 +79,11 @@ public:
 
   void setUpdateDelay (int delay) { updateDelay = delay; }
   int  UpdateDelay () { return updateDelay; }
-  void stopPositioning();
+  inline void stopPositioning();
 
   void startPositioning();
+
+  inline bool isRunning();
 
   void setCenter(qreal lat, qreal lng);
   void SetLocator (QGeoPositionInfoSource * locSrc);
@@ -130,6 +132,7 @@ protected:
   void keyPressEvent(QKeyEvent *event) ;
 
 private:
+  bool running;
   QString m_networkSetupError;
   SlippyMap *m_normalMap;
   SlippyMap *m_largeMap;

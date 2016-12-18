@@ -81,7 +81,7 @@
      <x>0</x>
      <y>0</y>
      <width>607</width>
-     <height>25</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAgenda">
@@ -100,8 +100,14 @@
     <addaction name="actionAbout"/>
     <addaction name="actionLicense"/>
    </widget>
+   <widget class="QMenu" name="menuCur">
+    <property name="title">
+     <string>Cur:</string>
+    </property>
+   </widget>
    <addaction name="menuAgenda"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuCur"/>
   </widget>
   <action name="actionSettings">
    <property name="text">

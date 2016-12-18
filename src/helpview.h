@@ -14,7 +14,7 @@
 
 #include "delib-debug.h"
 #include <QDialog>
-#include "ui_helpwin.h"
+//#include "ui_helpwin.h"
 
 namespace deliberate {
 

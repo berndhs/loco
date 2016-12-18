@@ -118,6 +118,7 @@ private slots:
 
 signals:
   void updated(const QRect &rect);
+  void iAmHere (const QGeoCoordinate &here);
 
 protected:
   QRect tileRect(const QPoint &tp);

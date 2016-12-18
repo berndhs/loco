@@ -1,10 +1,10 @@
-#ifndef DENADA_H
-#define DENADA_H
+#ifndef LOCO_H
+#define LOCO_H
 
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2010, Bernd Stramm
+ * Copyright (C) 2016, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,9 +26,9 @@
 #include <QMainWindow>
 #include "ui_loco.h"
 #include "config-edit.h"
-#include "helpview.h"
-#include <QtLocation/QGeoPositionInfo>
+#include <QGeoPositionInfo>
 #include <QRect>
+#include <QTimer>
 #include "slippy.h"
 #include "light-map.h"
 #include "connectivityhelper.h"
@@ -93,7 +93,9 @@ private slots:
   void NewDestination (const QGeoCoordinate & whereTo,
                        const QString & name);
   void handleNetworkData(QNetworkReply *reply);
+  void reportPos (const QGeoCoordinate & here);
   void download ();
+  void refresh();
 
 signals:
 
@@ -112,7 +114,7 @@ private:
   ConfigEdit       configEdit;
   QStringList      configMessages;
 
-  deliberate::HelpView        *helpView;
+//  deliberate::HelpView        *helpView;
   bool             runAgain;
 
   Locator    *locator;
@@ -122,6 +124,8 @@ private:
   QGeoCoordinate   destination;
   QString          destName;
   QGeoCoordinate   lastLocation;
+
+  QTimer          *refreshTimer;
 
   int              normalStep;
   int              shortStep;

@@ -5,7 +5,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2010, Bernd Stramm
+ * Copyright (C) 2016, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -145,6 +145,9 @@ SlippyMap::pan(const QPoint &delta)
   QPointF center = tileForCoordinate(latitude, longitude, zoom) - dx;
   latitude = latitudeFromTile(center.y(), zoom);
   longitude = longitudeFromTile(center.x(), zoom);
+  qDebug() << Q_FUNC_INFO << latitude << longitude;
+  loco::lastPlace = QGeoCoordinate(latitude,longitude);
+  emit iAmHere(loco::lastPlace);
   invalidate();
 }
 
@@ -206,7 +209,7 @@ qDebug () << "SlippyMap " << objectName() << " save in cache " << tp;
 void
 SlippyMap::handleCacheData (QPoint tp, const QImage &img)
 {
-qDebug () << " SlippyMap "
+qDebug () << Q_FUNC_INFO
           << objectName() << " get cache point " << tp << " img Null " << img.isNull();
   if (img.isNull()) {
     m_tilePixmaps[tp] = m_emptyTile;

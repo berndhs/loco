@@ -5,7 +5,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2010, Bernd Stramm
+ * Copyright (C) 2016, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@
  *  Boston, MA  02110-1301, USA.
  ****************************************************************/
 #include <QtCore>
-
+#include <QGeoCoordinate>
 uint qHash(const QPoint& p);
 
 namespace loco
@@ -37,6 +37,8 @@ QPointF tileForCoordinate(qreal lat, qreal lng, int zoom);
 qreal longitudeFromTile(qreal tx, int zoom);
 
 qreal latitudeFromTile(qreal ty, int zoom);
+
+extern QGeoCoordinate lastPlace;
 
 } // namespace
 

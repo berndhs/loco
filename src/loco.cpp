@@ -3,7 +3,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2010, Bernd Stramm
+ * Copyright (C) 2016, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -24,7 +24,6 @@
 #include <QApplication>
 #include "deliberate.h"
 #include "version.h"
-#include "helpview.h"
 #include <QSize>
 #include <QDebug>
 #include <QMessageBox>
@@ -32,7 +31,7 @@
 #include <QCursor>
 #include <QDir>
 #include <QDesktopServices>
-#include <QtLocation/QGeoCoordinate>
+#include <QGeoCoordinate>
 #include "locator.h"
 #include "slip-cache.h"
 
@@ -49,7 +48,6 @@ Loco::Loco (const QString & tour, QWidget *parent)
    initDone (false),
    app (0),
    configEdit (this),
-   helpView (0),
    runAgain (false),
    locator (0),
    normalStep (1000),
@@ -62,13 +60,16 @@ Loco::Loco (const QString & tour, QWidget *parent)
   Settings().setValue ("timers/updateperiod",LocalUpdateDelay);
   mainUi.displayMap->setUpdateDelay (LocalUpdateDelay);
   mainUi.actionRestart->setEnabled (false);
-  helpView = new HelpView (this);
+//  helpView = new HelpView (this);
   locator = new Locator (tour, this);
   normalStep = Settings().value ("steps/localmove",
                   normalStep).toInt();
   Settings().setValue ("steps/localmove",normalStep);
   shortStep = normalStep/5;
   Connect ();
+  refreshTimer = new QTimer(this);
+  connect (refreshTimer,SIGNAL(timeout()),this,SLOT(refresh()));
+  refreshTimer->start(2000);
 }
 
 void
@@ -166,6 +167,8 @@ Loco::Connect ()
            locator, SLOT (startUpdates()));
   connect (mainUi.stopButton, SIGNAL (clicked()),
            locator, SLOT (stopUpdates()));
+  mainUi.menuCur->setTitle(QObject::tr("where ?"));
+  connect (locator,SIGNAL(iAmHere(QGeoCoordinate)),this,SLOT(reportPos(QGeoCoordinate)));
 }
 
 void
@@ -240,9 +243,9 @@ Loco::Exiting ()
 void
 Loco::License ()
 {
-  if (helpView) {
-    helpView->Show ("qrc:/help/LICENSE.txt");
-  }
+//  if (helpView) {
+//    helpView->Show ("qrc:/help/LICENSE.txt");
+//  }
 }
 
 void
@@ -335,11 +338,21 @@ Loco::download ()
   qDebug () << "Loco::download ";
 }
 
+void Loco::refresh()
+{
+  mainUi.menuCur->setTitle(loco::lastPlace.toString());
+}
+
 void
 Loco::handleNetworkData (QNetworkReply *reply)
 {
   qDebug () << " Network Data arrived " << reply;
   qDebug () << " from " << reply->url();
+}
+
+void Loco::reportPos(const QGeoCoordinate &here)
+{
+  mainUi.menuCur->setTitle(here.toString());
 }
 
 

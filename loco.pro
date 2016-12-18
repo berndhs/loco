@@ -5,7 +5,7 @@
 #/****************************************************************
 # * This file is distributed under the following license:
 # *
-# * Copyright (C) 2010, Bernd Stramm
+# * Copyright (C) 2016, Bernd Stramm
 # *
 # *  This program is free software; you can redistribute it and/or
 # *  modify it under the terms of the GNU General Public License
@@ -27,13 +27,18 @@ MYNAME = loco
 
 TEMPLATE = app
 
-QT += core gui sql  webenginewidgets network xml
+ARCH = $$system(uname -m)
+
+
+QT += core gui
+QT += widgets
+QT += sql network xml
 QT += positioning
 
 CONFIG += debug_and_release
 CONFIG += bearer
 
-MAKEFILE = Make_$${MYNAME}
+MAKEFILE = Makefile
 
 CONFIG(debug, debug|release) {
   DEFINES +=  QT_MESSAGELOGCONTEXT
@@ -64,7 +69,7 @@ FORMS = \
         ui/$${MYNAME}.ui \
         ui/DebugLog.ui \
         ui/config-edit.ui \
-        ui/helpwin.ui \
+#        ui/helpwin.ui \
         
 
 HEADERS = \
@@ -76,7 +81,7 @@ HEADERS = \
           src/delib-debug.h \
           src/deliberate.h \
           src/version.h \
-          src/helpview.h \
+#          src/helpview.h \
           src/locator.h \
           src/slippy.h \
           src/loco-global.h \
@@ -93,7 +98,7 @@ SOURCES = \
           src/delib-debug.cpp \
           src/deliberate.cpp \
           src/version.cpp \
-          src/helpview.cpp \
+#          src/helpview.cpp \
           src/locator.cpp \
           src/slippy.cpp \
           src/loco-global.cpp \
@@ -103,4 +108,19 @@ SOURCES = \
 
 DISTFILES += \
     tour-default
+
+
+#DISTFILES += \
+#    android/AndroidManifest.xml \
+#    android/gradle/wrapper/gradle-wrapper.jar \
+#    android/gradlew \
+#    android/res/values/libs.xml \
+#    android/build.gradle \
+#    android/gradle/wrapper/gradle-wrapper.properties \
+#    android/gradlew.bat
+
+#ANDROID_PACKAGE_SOURCE_DIR = ../build-loco-Android_for_armeabi_v7a_GCC_4_9_Qt_5_7_1-Debug/
+#message ("look in "$$ANDROID_PACKAGE_SOURCE_DIR);
+
+
 

@@ -127,24 +127,33 @@ LightMap::SetCourseAngle (qreal angleDegrees)
   courseAngle = angleDegrees;
 }
 
-void
+inline void
 LightMap::stopPositioning()
 {
   if (m_location)
     m_location->stopUpdates();
+  running = false;
+}
+
+inline bool
+LightMap::isRunning()
+{
+  return running;
 }
 
 void
 LightMap::startPositioning()
 {
-qDebug () << " LightMap startPositining, location " << m_location;
+qDebug () << Q_FUNC_INFO << m_location;
   if (m_location)
     m_location->startUpdates();
+  running = true;
 }
 
 void
 LightMap::setCenter(qreal lat, qreal lng)
 {
+  qDebug() << Q_FUNC_INFO << lat << lng;
   if (!m_normalMap || !m_largeMap) {
     firstLat = lat;
     firstLong = lng;
@@ -252,7 +261,7 @@ qDebug () << "          final m_location " << m_location;
 void 
 LightMap::positionUpdated(const QGeoPositionInfo &pos) 
 {
-qDebug () << " LightMap position update " << pos.coordinate().toString();
+qDebug () << Q_FUNC_INFO << pos.coordinate().toString();
   setCenter(pos.coordinate().latitude(), pos.coordinate().longitude());
 }
 
@@ -288,7 +297,7 @@ LightMap::resizeEvent(QResizeEvent *)
 void
 LightMap::paintEvent(QPaintEvent *event)
 {
-qDebug () << "LightMap paint " << event;
+qDebug () << Q_FUNC_INFO << event;
   if (!m_normalMap || !m_largeMap)
     return;
 
@@ -296,13 +305,8 @@ qDebug () << "LightMap paint " << event;
   p.begin(this);
   m_normalMap->render(&p, event->rect());
   p.setPen(Qt::black);
-#if defined(Q_OS_SYMBIAN)
-  QFont font = p.font();
-  font.setPixelSize(13);
-  p.setFont(font);
-#endif
   p.drawText(rect(), Qt::AlignBottom | Qt::TextWordWrap,
-             "Map data CCBYSA 2009 OpenStreetMap.org contributors");
+             "Map data CCBYSA 2016 OpenStreetMap.org contributors");
   QPoint midpoint (rect().center());
   QPen pen (Qt::DashLine);
   pen.setColor (Qt::darkBlue);

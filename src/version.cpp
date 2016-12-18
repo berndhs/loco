@@ -8,7 +8,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2010, Bernd Stramm
+ * Copyright (C) 2016, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -28,10 +28,10 @@
  
 namespace deliberate {
 
-  QString ProgramVersion::VersionNumber ("0.0.5");
+  QString ProgramVersion::VersionNumber ("0.1.5");
 
   QString ProgramVersion::ProgramName("Loco");
-  QString ProgramVersion::copyright ("Copyright (C) 2010 Bernd Stramm");
+  QString ProgramVersion::copyright ("Copyright (C) 2016 Bernd Stramm");
   
   ProgramVersion::ProgramVersion (QString pgmname)
   {

@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2010, Bernd Stramm
+ * Copyright (C) 2016, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@
 //#include <QtLocation/QGeoCoordinate>
 #include "deliberate.h"
 #include <math.h>
+#include "loco-global.h"
 
 //using namespace QtMobility;
 using namespace deliberate;
@@ -68,6 +69,7 @@ Locator::Interval ()
 QGeoPositionInfoSource::Error Locator::error() const
 {
   qDebug() << Q_FUNC_INFO ;
+  return QGeoPositionInfoSource::NoError;
 }
 
 QGeoPositionInfo
@@ -110,13 +112,16 @@ Locator::startUpdates ()
   timer->start (delay);
   getPosition ();
 qDebug () << " Starting updates every " << delay;
-qDebug () << " startUpdates lastPosition " << lastPosition.toString();
+  lastPosition = loco::lastPlace;
+qDebug () << Q_FUNC_INFO << lastPosition.toString();
   emit NewDestination (destPosition, destSpot->name);
 }
 
 void
 Locator::stopUpdates ()
 {
+  qDebug() << Q_FUNC_INFO << lastPosition;
+  emit iAmHere(lastPosition);
   timer->stop();
 }
 
@@ -129,7 +134,6 @@ Locator::requestUpdate (int timeout)
 void
 Locator::InitCircuit (const QString & tourfile)
 {
-  //AddSpot (43.0 + 4.777/60.0,- (79.0 + 21.044/60.0) );
   circuit.clear ();
   QString filename (tourfile);
   if (filename.length() == 0) {
@@ -168,6 +172,7 @@ Locator::FirstSpot (QGeoCoordinate & origin,
   destSpot = currentSpot;
   destSpot++;
   origin = currentSpot->coordinate;
+  loco::lastPlace = origin;
   destination = destSpot->coordinate;
   destName = destSpot->name;
 }

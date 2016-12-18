@@ -4,7 +4,7 @@
 /****************************************************************
  * This file is distributed under the following license:
  *
- * Copyright (C) 2010, Bernd Stramm
+ * Copyright (C) 2016, Bernd Stramm
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -30,6 +30,8 @@ uint qHash(const QPoint& p)
 
 namespace loco
 {
+
+QGeoCoordinate lastPlace(QGeoCoordinate(51.476800, 0.000));
 
 QPointF tileForCoordinate(qreal lat, qreal lng, int zoom)
 {
